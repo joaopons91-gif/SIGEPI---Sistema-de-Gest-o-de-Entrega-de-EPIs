@@ -1,0 +1,400 @@
+-- SIGEPI — esqm inicial para SQL
+-- Este arqv cria o bd e as tb princp para alimentar o app
+-- Execute em ambt de dev com dados ficticios.
+-- Em prod, use migraçoes vers, usuario SQL com privilegio min,
+-- bckps, TLS e politicas aprov para retençao e acss aos dados.
+-- Configure a sessao da aplicaçao em UTC: SET time_zone = '+00:00';
+
+CREATE DATABASE IF NOT EXISTS sigepi
+  CHARACTER SET utf8mb4
+  COLLATE utf8mb4_0900_ai_ci;
+
+USE sigepi;
+
+-- Est org
+CREATE TABLE IF NOT EXISTS secretarias (
+  secretaria_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  nome VARCHAR(150) NOT NULL,
+  sigla VARCHAR(30) NULL,
+  ativa BOOLEAN NOT NULL DEFAULT TRUE,
+  criada_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (secretaria_id),
+  UNIQUE KEY uq_secretarias_nome (nome)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS departamentos (
+  departamento_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  secretaria_id BIGINT UNSIGNED NOT NULL,
+  nome VARCHAR(150) NOT NULL,
+  ativo BOOLEAN NOT NULL DEFAULT TRUE,
+  criada_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (departamento_id),
+  UNIQUE KEY uq_departamento_secretaria_nome (secretaria_id, nome),
+  CONSTRAINT fk_departamentos_secretarias
+    FOREIGN KEY (secretaria_id) REFERENCES secretarias (secretaria_id)
+    ON UPDATE CASCADE ON DELETE RESTRICT
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS cargos (
+  cargo_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  nome VARCHAR(150) NOT NULL,
+  descricao VARCHAR(500) NULL,
+  ativo BOOLEAN NOT NULL DEFAULT TRUE,
+  PRIMARY KEY (cargo_id),
+  UNIQUE KEY uq_cargos_nome (nome)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS servidores (
+  servidor_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  matricula VARCHAR(40) NOT NULL,
+  nome_completo VARCHAR(180) NOT NULL,
+  -- CPF deve ser criptografado pela aplicação antes de gravar.
+  cpf_cifrado VARBINARY(512) NULL,
+  -- HMAC-SHA-256 com segredo mantido fora do banco, para busca sem CPF em claro.
+  cpf_hash_busca BINARY(32) NULL,
+  cargo_id BIGINT UNSIGNED NULL,
+  secretaria_id BIGINT UNSIGNED NOT NULL,
+  departamento_id BIGINT UNSIGNED NULL,
+  data_admissao DATE NULL,
+  ativo BOOLEAN NOT NULL DEFAULT TRUE,
+  criado_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  atualizado_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (servidor_id),
+  UNIQUE KEY uq_servidores_matricula (matricula),
+  UNIQUE KEY uq_servidores_cpf_hash (cpf_hash_busca),
+  KEY ix_servidores_nome (nome_completo),
+  KEY ix_servidores_secretaria_departamento (secretaria_id, departamento_id),
+  CONSTRAINT fk_servidores_cargos
+    FOREIGN KEY (cargo_id) REFERENCES cargos (cargo_id)
+    ON UPDATE CASCADE ON DELETE SET NULL,
+  CONSTRAINT fk_servidores_secretarias
+    FOREIGN KEY (secretaria_id) REFERENCES secretarias (secretaria_id)
+    ON UPDATE CASCADE ON DELETE RESTRICT,
+  CONSTRAINT fk_servidores_departamentos
+    FOREIGN KEY (departamento_id) REFERENCES departamentos (departamento_id)
+    ON UPDATE CASCADE ON DELETE SET NULL
+) ENGINE=InnoDB;
+
+-- User e perf de acess
+CREATE TABLE IF NOT EXISTS usuarios (
+  usuario_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  servidor_id BIGINT UNSIGNED NULL,
+  nome_exibicao VARCHAR(150) NOT NULL,
+  email VARCHAR(254) NOT NULL,
+  provedor_identidade VARCHAR(80) NULL,
+  identificador_provedor VARCHAR(190) NULL,
+  ativo BOOLEAN NOT NULL DEFAULT TRUE,
+  criado_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (usuario_id),
+  UNIQUE KEY uq_usuarios_email (email),
+  UNIQUE KEY uq_usuarios_provedor (provedor_identidade, identificador_provedor),
+  CONSTRAINT fk_usuarios_servidores
+    FOREIGN KEY (servidor_id) REFERENCES servidores (servidor_id)
+    ON UPDATE CASCADE ON DELETE SET NULL
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS perfis (
+  perfil_id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  codigo VARCHAR(40) NOT NULL,
+  nome VARCHAR(100) NOT NULL,
+  PRIMARY KEY (perfil_id),
+  UNIQUE KEY uq_perfis_codigo (codigo)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS usuarios_perfis (
+  usuario_perfil_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  usuario_id BIGINT UNSIGNED NOT NULL,
+  perfil_id SMALLINT UNSIGNED NOT NULL,
+  secretaria_id BIGINT UNSIGNED NULL,
+  secretaria_escopo_id BIGINT UNSIGNED
+    GENERATED ALWAYS AS (COALESCE(secretaria_id, 0)) STORED,
+  concedido_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (usuario_perfil_id),
+  UNIQUE KEY uq_usuario_perfil_escopo (usuario_id, perfil_id, secretaria_escopo_id),
+  CONSTRAINT fk_usuarios_perfis_usuarios
+    FOREIGN KEY (usuario_id) REFERENCES usuarios (usuario_id)
+    ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT fk_usuarios_perfis_perfis
+    FOREIGN KEY (perfil_id) REFERENCES perfis (perfil_id)
+    ON UPDATE CASCADE ON DELETE RESTRICT,
+  CONSTRAINT fk_usuarios_perfis_secretarias
+    FOREIGN KEY (secretaria_id) REFERENCES secretarias (secretaria_id)
+    ON UPDATE CASCADE ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- Catlog de equip e aquisiçao
+CREATE TABLE IF NOT EXISTS epis (
+  epi_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  nome VARCHAR(150) NOT NULL,
+  descricao VARCHAR(500) NULL,
+  fabricante VARCHAR(150) NULL,
+  modelo VARCHAR(150) NULL,
+  numero_ca VARCHAR(30) NULL,
+  validade_ca DATE NULL COMMENT 'Validade do CA para comercialização; distinta da validade do produto.',
+  vida_util_estimada_meses SMALLINT UNSIGNED NULL COMMENT 'Estimativa inicial; SST deve revisar conforme fabricante e condições de uso.',
+  unidade_medida VARCHAR(20) NOT NULL DEFAULT 'unidade',
+  estoque_minimo DECIMAL(12,3) NOT NULL DEFAULT 0,
+  ativo BOOLEAN NOT NULL DEFAULT TRUE,
+  criado_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (epi_id),
+  KEY ix_epis_nome (nome),
+  KEY ix_epis_ca (numero_ca),
+  CONSTRAINT chk_epis_estoque_minimo CHECK (estoque_minimo >= 0)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS compras (
+  compra_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  numero_processo VARCHAR(80) NULL,
+  modalidade VARCHAR(80) NULL,
+  numero_licitacao VARCHAR(80) NULL,
+  fornecedor VARCHAR(180) NULL,
+  numero_contrato VARCHAR(80) NULL,
+  numero_empenho VARCHAR(80) NULL,
+  data_compra DATE NULL,
+  observacao VARCHAR(500) NULL,
+  criada_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (compra_id),
+  KEY ix_compras_licitacao (numero_licitacao),
+  KEY ix_compras_processo (numero_processo)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS epi_lotes (
+  lote_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  epi_id BIGINT UNSIGNED NOT NULL,
+  compra_id BIGINT UNSIGNED NULL,
+  codigo_lote VARCHAR(80) NOT NULL,
+  data_fabricacao DATE NULL,
+  validade_produto DATE NULL,
+  recebido_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  observacao VARCHAR(500) NULL,
+  PRIMARY KEY (lote_id),
+  UNIQUE KEY uq_epi_lotes_epi_codigo (epi_id, codigo_lote),
+  KEY ix_epi_lotes_validade (validade_produto),
+  CONSTRAINT fk_epi_lotes_epis
+    FOREIGN KEY (epi_id) REFERENCES epis (epi_id)
+    ON UPDATE CASCADE ON DELETE RESTRICT,
+  CONSTRAINT fk_epi_lotes_compras
+    FOREIGN KEY (compra_id) REFERENCES compras (compra_id)
+    ON UPDATE CASCADE ON DELETE SET NULL
+) ENGINE=InnoDB;
+
+-- Regras config de apoio a recomend, sempre rev por SST.
+CREATE TABLE IF NOT EXISTS regras_epi_cargo (
+  regra_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  cargo_id BIGINT UNSIGNED NOT NULL,
+  epi_id BIGINT UNSIGNED NOT NULL,
+  referencia_risco VARCHAR(250) NULL COMMENT 'Ex.: referência ao PGR/inventário de riscos validado pelo órgão.',
+  fonte_normativa VARCHAR(250) NULL,
+  observacao VARCHAR(500) NULL,
+  revisada_por_usuario_id BIGINT UNSIGNED NULL,
+  revisada_em DATETIME NULL,
+  ativa BOOLEAN NOT NULL DEFAULT TRUE,
+  criada_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (regra_id),
+  UNIQUE KEY uq_regra_cargo_epi (cargo_id, epi_id),
+  CONSTRAINT fk_regras_cargo
+    FOREIGN KEY (cargo_id) REFERENCES cargos (cargo_id)
+    ON UPDATE CASCADE ON DELETE RESTRICT,
+  CONSTRAINT fk_regras_epi
+    FOREIGN KEY (epi_id) REFERENCES epis (epi_id)
+    ON UPDATE CASCADE ON DELETE RESTRICT,
+  CONSTRAINT fk_regras_revisor
+    FOREIGN KEY (revisada_por_usuario_id) REFERENCES usuarios (usuario_id)
+    ON UPDATE CASCADE ON DELETE SET NULL
+) ENGINE=InnoDB;
+
+-- Entregas e itens disponib
+CREATE TABLE IF NOT EXISTS entregas (
+  entrega_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  codigo_publico CHAR(26) NULL COMMENT 'Código público ULID gerado pela aplicação; não é chave sequencial.',
+  servidor_id BIGINT UNSIGNED NOT NULL,
+  operador_usuario_id BIGINT UNSIGNED NOT NULL,
+  data_entrega DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  local_descricao VARCHAR(250) NULL,
+  latitude DECIMAL(10,7) NULL COMMENT 'Coletar somente se habilitado e justificado pela política do órgão.',
+  longitude DECIMAL(10,7) NULL COMMENT 'Coletar somente se habilitado e justificado pela política do órgão.',
+  status ENUM('RASCUNHO','FINALIZADA','CANCELADA') NOT NULL DEFAULT 'RASCUNHO',
+  observacao VARCHAR(1000) NULL,
+  finalizada_em DATETIME NULL,
+  criada_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (entrega_id),
+  UNIQUE KEY uq_entregas_codigo_publico (codigo_publico),
+  KEY ix_entregas_servidor_data (servidor_id, data_entrega),
+  KEY ix_entregas_status_data (status, data_entrega),
+  CONSTRAINT fk_entregas_servidores
+    FOREIGN KEY (servidor_id) REFERENCES servidores (servidor_id)
+    ON UPDATE CASCADE ON DELETE RESTRICT,
+  CONSTRAINT fk_entregas_operador
+    FOREIGN KEY (operador_usuario_id) REFERENCES usuarios (usuario_id)
+    ON UPDATE CASCADE ON DELETE RESTRICT,
+  CONSTRAINT chk_entregas_latitude CHECK (latitude IS NULL OR latitude BETWEEN -90 AND 90),
+  CONSTRAINT chk_entregas_longitude CHECK (longitude IS NULL OR longitude BETWEEN -180 AND 180)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS itens_entrega (
+  item_entrega_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  entrega_id BIGINT UNSIGNED NOT NULL,
+  epi_id BIGINT UNSIGNED NOT NULL,
+  lote_id BIGINT UNSIGNED NOT NULL,
+  quantidade DECIMAL(12,3) NOT NULL,
+  decisao ENUM('ACEITO','RECUSADO','PENDENTE') NOT NULL DEFAULT 'PENDENTE',
+  motivo_recusa ENUM('AINDA_EM_BOAS_CONDICOES','INCOMPATIVEL','RECUSA_PESSOAL','OUTRO') NULL,
+  justificativa VARCHAR(1000) NULL,
+  data_troca_prevista DATE NULL COMMENT 'Estimativa calculada pela aplicação; não substitui avaliação do equipamento.',
+  PRIMARY KEY (item_entrega_id),
+  KEY ix_itens_entrega_entrega (entrega_id),
+  KEY ix_itens_entrega_epi_lote (epi_id, lote_id),
+  KEY ix_itens_entrega_troca (data_troca_prevista, decisao),
+  CONSTRAINT fk_itens_entrega_entregas
+    FOREIGN KEY (entrega_id) REFERENCES entregas (entrega_id)
+    ON UPDATE CASCADE ON DELETE RESTRICT,
+  CONSTRAINT fk_itens_entrega_epis
+    FOREIGN KEY (epi_id) REFERENCES epis (epi_id)
+    ON UPDATE CASCADE ON DELETE RESTRICT,
+  CONSTRAINT fk_itens_entrega_lotes
+    FOREIGN KEY (lote_id) REFERENCES epi_lotes (lote_id)
+    ON UPDATE CASCADE ON DELETE RESTRICT,
+  CONSTRAINT chk_itens_entrega_quantidade CHECK (quantidade > 0),
+  CONSTRAINT chk_itens_entrega_recusa CHECK (
+    (decisao = 'RECUSADO' AND motivo_recusa IS NOT NULL)
+    OR (decisao <> 'RECUSADO' AND motivo_recusa IS NULL)
+  )
+) ENGINE=InnoDB;
+
+-- Livro de mov: saldo = soma das qntd assinadas por lote.
+-- Nao edite/apague mov conf; registre um mov corretivo.
+CREATE TABLE IF NOT EXISTS movimentacoes_estoque (
+  movimentacao_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  lote_id BIGINT UNSIGNED NOT NULL,
+  item_entrega_id BIGINT UNSIGNED NULL,
+  usuario_id BIGINT UNSIGNED NOT NULL,
+  tipo ENUM('RECEBIMENTO','ENTREGA','AJUSTE_ENTRADA','AJUSTE_SAIDA','DEVOLUCAO','PERDA') NOT NULL,
+  quantidade DECIMAL(12,3) NOT NULL COMMENT 'Positiva para entrada e negativa para saída.',
+  motivo VARCHAR(500) NULL,
+  documento_referencia VARCHAR(120) NULL,
+  ocorrido_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  criado_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (movimentacao_id),
+  UNIQUE KEY uq_movimentacao_item_entrega (item_entrega_id),
+  KEY ix_movimentacoes_lote_data (lote_id, ocorrido_em),
+  CONSTRAINT fk_movimentacoes_lotes
+    FOREIGN KEY (lote_id) REFERENCES epi_lotes (lote_id)
+    ON UPDATE CASCADE ON DELETE RESTRICT,
+  CONSTRAINT fk_movimentacoes_itens_entrega
+    FOREIGN KEY (item_entrega_id) REFERENCES itens_entrega (item_entrega_id)
+    ON UPDATE CASCADE ON DELETE RESTRICT,
+  CONSTRAINT fk_movimentacoes_usuarios
+    FOREIGN KEY (usuario_id) REFERENCES usuarios (usuario_id)
+    ON UPDATE CASCADE ON DELETE RESTRICT,
+  CONSTRAINT chk_movimentacao_quantidade CHECK (
+    (tipo IN ('RECEBIMENTO','AJUSTE_ENTRADA','DEVOLUCAO') AND quantidade > 0)
+    OR (tipo IN ('ENTREGA','AJUSTE_SAIDA','PERDA') AND quantidade < 0)
+  ),
+  CONSTRAINT chk_movimentacao_entrega CHECK (
+    (tipo = 'ENTREGA' AND item_entrega_id IS NOT NULL)
+    OR (tipo <> 'ENTREGA' AND item_entrega_id IS NULL)
+  )
+) ENGINE=InnoDB;
+
+-- Assinatura e evidências ficam em armazenamento privado de objetos.
+-- O banco guarda somente chave interna e hash de integridade, não URL pública.
+CREATE TABLE IF NOT EXISTS assinaturas_entrega (
+  assinatura_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  entrega_id BIGINT UNSIGNED NOT NULL,
+  chave_arquivo_privado VARCHAR(500) NOT NULL,
+  hash_sha256 BINARY(32) NOT NULL,
+  metodo VARCHAR(40) NOT NULL DEFAULT 'DESENHADA_NA_TELA',
+  nome_declarante VARCHAR(180) NOT NULL,
+  assinada_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (assinatura_id),
+  UNIQUE KEY uq_assinatura_entrega (entrega_id),
+  CONSTRAINT fk_assinaturas_entregas
+    FOREIGN KEY (entrega_id) REFERENCES entregas (entrega_id)
+    ON UPDATE CASCADE ON DELETE RESTRICT
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS evidencias_entrega (
+  evidencia_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  entrega_id BIGINT UNSIGNED NOT NULL,
+  tipo ENUM('SERVIDOR_RECEBENDO','EQUIPAMENTO','DOCUMENTO_ASSINADO','OUTRA') NOT NULL,
+  chave_arquivo_privado VARCHAR(500) NOT NULL,
+  nome_arquivo_original VARCHAR(255) NULL,
+  mime_type VARCHAR(120) NOT NULL,
+  tamanho_bytes BIGINT UNSIGNED NULL,
+  hash_sha256 BINARY(32) NOT NULL,
+  capturada_em DATETIME NULL,
+  enviada_por_usuario_id BIGINT UNSIGNED NOT NULL,
+  criada_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (evidencia_id),
+  KEY ix_evidencias_entrega_tipo (entrega_id, tipo),
+  CONSTRAINT fk_evidencias_entregas
+    FOREIGN KEY (entrega_id) REFERENCES entregas (entrega_id)
+    ON UPDATE CASCADE ON DELETE RESTRICT,
+  CONSTRAINT fk_evidencias_usuarios
+    FOREIGN KEY (enviada_por_usuario_id) REFERENCES usuarios (usuario_id)
+    ON UPDATE CASCADE ON DELETE RESTRICT
+) ENGINE=InnoDB;
+
+-- Trilha de aud: conceda a apo apenas INSERT e SELECT nesta tabela.
+CREATE TABLE IF NOT EXISTS eventos_auditoria (
+  evento_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  usuario_id BIGINT UNSIGNED NULL,
+  acao VARCHAR(80) NOT NULL,
+  entidade VARCHAR(80) NOT NULL,
+  identificador_entidade VARCHAR(80) NOT NULL,
+  dados_evento JSON NULL,
+  identificador_requisicao CHAR(36) NULL,
+  ocorrido_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (evento_id),
+  KEY ix_auditoria_entidade (entidade, identificador_entidade, ocorrido_em),
+  KEY ix_auditoria_usuario_data (usuario_id, ocorrido_em),
+  CONSTRAINT fk_auditoria_usuarios
+    FOREIGN KEY (usuario_id) REFERENCES usuarios (usuario_id)
+    ON UPDATE CASCADE ON DELETE SET NULL
+) ENGINE=InnoDB;
+
+-- Perfis inc. Ajuste os nomes/permissoes conforme a politica do orgao.
+INSERT INTO perfis (codigo, nome) VALUES
+  ('SST', 'Técnico de Segurança do Trabalho'),
+  ('ALMOXARIFADO', 'Almoxarifado'),
+  ('GESTOR_SECRETARIA', 'Gestor de Secretaria'),
+  ('RH', 'Recursos Humanos'),
+  ('ADMINISTRADOR', 'Administrador')
+ON DUPLICATE KEY UPDATE nome = VALUES(nome);
+
+-- Visao de saldo por lote e EPI; qntd disponivel nao e gravada duplicada.
+CREATE OR REPLACE VIEW vw_estoque_atual AS
+SELECT
+  e.epi_id,
+  e.nome AS epi,
+  e.numero_ca,
+  l.lote_id,
+  l.codigo_lote,
+  l.validade_produto,
+  COALESCE(SUM(m.quantidade), 0) AS saldo_atual,
+  e.estoque_minimo
+FROM epis AS e
+JOIN epi_lotes AS l ON l.epi_id = e.epi_id
+LEFT JOIN movimentacoes_estoque AS m ON m.lote_id = l.lote_id
+GROUP BY
+  e.epi_id, e.nome, e.numero_ca, l.lote_id, l.codigo_lote,
+  l.validade_produto, e.estoque_minimo;
+
+-- Const de expl: alertas estimados de troca nos proximos 15 dias.
+-- SELECT s.servidor_id, s.nome_completo, e.nome AS epi,
+--        ie.data_troca_prevista
+-- FROM itens_entrega AS ie
+-- JOIN entregas AS en ON en.entrega_id = ie.entrega_id
+-- JOIN servidores AS s ON s.servidor_id = en.servidor_id
+-- JOIN epis AS e ON e.epi_id = ie.epi_id
+-- WHERE ie.decisao = 'ACEITO'
+--   AND ie.data_troca_prevista BETWEEN CURRENT_DATE()
+--       AND DATE_ADD(CURRENT_DATE(), INTERVAL 15 DAY)
+-- ORDER BY ie.data_troca_prevista;
+
+-- Obs de implementaçao:
+-- 1. O backend deve criar entrega, itens, movimentos e auditoria em transaçao.
+-- 2. Antes de confirmar saida, valide saldo suficiente do lote e evite saldo negativo.
+-- 3. Recusa nao gera movimento de saida; somente item ACEITO gera saida de estoque.
+-- 4. Emissao do PDF, calculo da troca e validaçao da assinatura sao regras da aplicaçao.
+-- 5. Proteja CPF e anexos fora do banco; nao use dados reais no ambiente de demonstraçao.
