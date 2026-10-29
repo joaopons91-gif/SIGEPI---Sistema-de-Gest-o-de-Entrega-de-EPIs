@@ -184,3 +184,12 @@ Uma entrega contém vários itens; cada item aponta para um EPI/lote e registra 
 ## Licença
 
 A licença ainda deve ser escolhida pelo responsável pelo projeto antes da publicação. Evite indicar uma licença sem confirmar que todos os autores concordam com seus termos.
+
+
+## Próximos passos:
+
+1. Orientação e treinamento no momento da entrega. Registrar quais instruções foram dadas sobre uso, limitações, ajuste, conservação e manutenção do EPI, além de guardar treinamentos quando aplicáveis. A NR-6 prevê essas informações e treinamentos conforme as características do equipamento e da atividade. 
+2. Recomendação por atividade e risco, não só pelo cargo. Vincular cada recomendação aos riscos avaliados e à referência usada, como o PGR, e registrar quem do SST revisou e aprovou. A NR-6 considera atividade, riscos, eficácia, adequação e compatibilidade dos EPIs na seleção. Isso também dá uma base mais sólida para o módulo de IA: ele sugere e explica; o responsável valida. 
+3. Ciclo de vida do equipamento. Criar registros para EPI danificado, perdido, devolvido, em manutenção ou descartado, com motivo e movimentação correspondente no estoque. Isso ajuda a evitar que um equipamento impróprio continue aparecendo como disponível.
+4. QR Code para lotes e movimentações. Uma leitura rápida no celular poderia localizar o EPI, CA, lote e validade durante o recebimento ou a entrega, reduzindo erros de digitação.
+5. Uso em locais com internet instável. Permitir preparar registros no celular e sincronizá-los depois, indicando claramente o que ainda não foi enviado ao sistema.
