@@ -171,10 +171,17 @@ Uma entrega contém vários itens; cada item aponta para um EPI/lote e registra 
 
 ```text
 .
+├── docs/
+│   └── prototipo/
+│       └── index.html
+├── Esqm inicial de BD para SQL.txt
+├── estoque.png
+├── fluxo-processo.png
+├── fluxo-processo.svg
+├── nova-entrega.png
+├── painel.png
 ├── README.md
-└── docs/
-    └── prototipo/
-        └── index.html
+└── sigepi_mysql.sql
 ```
 
 ## Como visualizar o protótipo
