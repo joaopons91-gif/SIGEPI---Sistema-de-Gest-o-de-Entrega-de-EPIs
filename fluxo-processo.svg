@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="3150" viewBox="0 0 1600 3150">
+<defs><marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="#0c8b82"/></marker><marker id="arrow-red" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="#c96758"/></marker><filter id="shadow" x="-10%" y="-10%" width="120%" height="125%"><feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="#183449" flood-opacity=".08"/></filter></defs>
+<rect width="100%" height="100%" fill="#f3f7f8"/>
+<rect x="0" y="0" width="1600" height="130" fill="#183449"/>
+<text x="800" y="57" text-anchor="middle" font-family="Arial,sans-serif" font-size="33" font-weight="700" fill="white">SIGEPI · Fluxo completo do processo</text>
+<text x="800" y="96" text-anchor="middle" font-family="Arial,sans-serif" font-size="17" fill="#c9d8df">Do cadastro e recebimento até a reposição e auditoria</text>
+
+<g filter="url(#shadow)"><rect x="390" y="155" width="820" height="110" rx="18" fill="#e8f5f2" stroke="#0c8b82" stroke-width="2"/></g>
+<circle cx="425" cy="189" r="18" fill="#0c8b82"/><text x="425" y="195" text-anchor="middle" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="white">1</text>
+<text x="455" y="194" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#193244">Início</text>
+<text x="415" y="228" font-family="Arial,sans-serif" font-size="16" fill="#607482">Definir órgão, responsáveis e escopo do processo.</text>
+<g filter="url(#shadow)"><rect x="390" y="325" width="820" height="145" rx="18" fill="#ffffff" stroke="#d8e2e7" stroke-width="2"/></g>
+<circle cx="425" cy="359" r="18" fill="#0c8b82"/><text x="425" y="365" text-anchor="middle" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="white">2</text>
+<text x="455" y="364" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#193244">Preparar cadastros e regras</text>
+<text x="415" y="398" font-family="Arial,sans-serif" font-size="16" fill="#607482">Cadastrar secretarias, departamentos, cargos, servidores, usuários e perfis.</text>
+<text x="415" y="425" font-family="Arial,sans-serif" font-size="16" fill="#607482">Cadastrar catálogo de EPIs, fabricante, modelo, CA e vida útil estimada.</text>
+<g filter="url(#shadow)"><rect x="390" y="530" width="820" height="145" rx="18" fill="#ffffff" stroke="#d8e2e7" stroke-width="2"/></g>
+<circle cx="425" cy="564" r="18" fill="#0c8b82"/><text x="425" y="570" text-anchor="middle" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="white">3</text>
+<text x="455" y="569" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#193244">Registrar compra e receber materiais</text>
+<text x="415" y="603" font-family="Arial,sans-serif" font-size="16" fill="#607482">Vincular licitação/compra ao fornecedor e conferir item, CA, lote,</text>
+<text x="415" y="630" font-family="Arial,sans-serif" font-size="16" fill="#607482">quantidade e validade do produto conforme documentação do fabricante.</text>
+<polygon points="800,685 950,760 800,835 650,760" fill="#fff5de" stroke="#e4bd68" stroke-width="2" filter="url(#shadow)"/>
+<text x="800" y="743" text-anchor="middle" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="#193244">Material</text>
+<text x="800" y="765" text-anchor="middle" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="#193244">confere?</text>
+<g filter="url(#shadow)"><rect x="60" y="685" width="300" height="155" rx="18" fill="#fff0ed" stroke="#e6a99e" stroke-width="2"/></g>
+<text x="84" y="724" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#193244">Não confere</text>
+<text x="85" y="758" font-family="Arial,sans-serif" font-size="16" fill="#607482">Bloquear ou separar o lote.</text>
+<text x="85" y="785" font-family="Arial,sans-serif" font-size="16" fill="#607482">Registrar divergência e resolver</text>
+<text x="85" y="812" font-family="Arial,sans-serif" font-size="16" fill="#607482">com fornecedor antes de liberar.</text>
+<path d="M650 760 H510 V762 H360" fill="none" stroke="#c96758" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow-red)"/>
+<text x="470" y="742" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="#c96758">NÃO</text>
+<path d="M210 685 V600 H390" fill="none" stroke="#c96758" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow-red)"/>
+<text x="815" y="851" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="#0c8b82">SIM</text>
+<path d="M800,835 L800,895" fill="none" stroke="#0c8b82" stroke-width="4" marker-end="url(#arrow)"/>
+<g filter="url(#shadow)"><rect x="390" y="900" width="820" height="130" rx="18" fill="#e8f5f2" stroke="#0c8b82" stroke-width="2"/></g>
+<circle cx="425" cy="934" r="18" fill="#0c8b82"/><text x="425" y="940" text-anchor="middle" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="white">4</text>
+<text x="455" y="939" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#193244">Cadastrar lote e entrada</text>
+<text x="415" y="973" font-family="Arial,sans-serif" font-size="16" fill="#607482">Registrar lote e compra de origem; lançar movimento positivo.</text>
+<text x="415" y="1000" font-family="Arial,sans-serif" font-size="16" fill="#607482">Saldo é calculado pelo livro de movimentações.</text>
+<path d="M800,1030 L800,1080" fill="none" stroke="#0c8b82" stroke-width="4" marker-end="url(#arrow)"/>
+<g filter="url(#shadow)"><rect x="390" y="1085" width="820" height="140" rx="18" fill="#ffffff" stroke="#d8e2e7" stroke-width="2"/></g>
+<circle cx="425" cy="1119" r="18" fill="#0c8b82"/><text x="425" y="1125" text-anchor="middle" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="white">5</text>
+<text x="455" y="1124" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#193244">Disponibilizar estoque</text>
+<text x="415" y="1158" font-family="Arial,sans-serif" font-size="16" fill="#607482">Bloquear lotes vencidos, em análise ou sem condição de uso.</text>
+<text x="415" y="1185" font-family="Arial,sans-serif" font-size="16" fill="#607482">Gerar alerta quando o saldo atingir o mínimo configurado.</text>
+<path d="M800,1225 L800,1275" fill="none" stroke="#0c8b82" stroke-width="4" marker-end="url(#arrow)"/>
+<g filter="url(#shadow)"><rect x="390" y="1280" width="820" height="130" rx="18" fill="#ffffff" stroke="#d8e2e7" stroke-width="2"/></g>
+<circle cx="425" cy="1314" r="18" fill="#0c8b82"/><text x="425" y="1320" text-anchor="middle" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="white">6</text>
+<text x="455" y="1319" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#193244">Iniciar entrega</text>
+<text x="415" y="1353" font-family="Arial,sans-serif" font-size="16" fill="#607482">Localizar o servidor e confirmar matrícula, secretaria, cargo e atividade.</text>
+<path d="M800,1410 L800,1460" fill="none" stroke="#0c8b82" stroke-width="4" marker-end="url(#arrow)"/>
+<g filter="url(#shadow)"><rect x="390" y="1465" width="820" height="145" rx="18" fill="#ffffff" stroke="#d8e2e7" stroke-width="2"/></g>
+<circle cx="425" cy="1499" r="18" fill="#0c8b82"/><text x="425" y="1505" text-anchor="middle" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="white">7</text>
+<text x="455" y="1504" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#193244">Associar atividade, riscos e EPIs</text>
+<text x="415" y="1538" font-family="Arial,sans-serif" font-size="16" fill="#607482">Exibir recomendações com a fonte e a versão revisada por SST.</text>
+<text x="415" y="1565" font-family="Arial,sans-serif" font-size="16" fill="#607482">A recomendação apoia a decisão; SST mantém a validação.</text>
+<path d="M800,1610 L800,1660" fill="none" stroke="#0c8b82" stroke-width="4" marker-end="url(#arrow)"/>
+<g filter="url(#shadow)"><rect x="390" y="1665" width="820" height="145" rx="18" fill="#ffffff" stroke="#d8e2e7" stroke-width="2"/></g>
+<circle cx="425" cy="1699" r="18" fill="#0c8b82"/><text x="425" y="1705" text-anchor="middle" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="white">8</text>
+<text x="455" y="1704" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#193244">Selecionar itens e lotes</text>
+<text x="415" y="1738" font-family="Arial,sans-serif" font-size="16" fill="#607482">Escolher quantidades e lotes liberados; priorizar vencimento mais próximo</text>
+<text x="415" y="1765" font-family="Arial,sans-serif" font-size="16" fill="#607482">conforme política do órgão e instruções do fabricante.</text>
+<polygon points="800,1825 960,1900 800,1975 640,1900" fill="#fff5de" stroke="#e4bd68" stroke-width="2" filter="url(#shadow)"/>
+<text x="800" y="1883" text-anchor="middle" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="#193244">Há saldo</text>
+<text x="800" y="1905" text-anchor="middle" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="#193244">suficiente?</text>
+<path d="M800,1810 L800,1825" fill="none" stroke="#0c8b82" stroke-width="4" marker-end="url(#arrow)"/>
+<g filter="url(#shadow)"><rect x="1240" y="1825" width="300" height="155" rx="18" fill="#fff5de" stroke="#e4bd68" stroke-width="2"/></g>
+<text x="1264" y="1864" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#193244">Não há saldo</text>
+<text x="1265" y="1898" font-family="Arial,sans-serif" font-size="16" fill="#607482">Avisar operador e almoxarifado.</text>
+<text x="1265" y="1925" font-family="Arial,sans-serif" font-size="16" fill="#607482">Ajustar pedido ou aguardar</text>
+<text x="1265" y="1952" font-family="Arial,sans-serif" font-size="16" fill="#607482">reposição para continuar.</text>
+<path d="M960 1900 H1240" fill="none" stroke="#0c8b82" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="1090" y="1880" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="#986708">NÃO</text>
+<path d="M1390 1825 V1740 H1210" fill="none" stroke="#0c8b82" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="820" y="1995" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="#0c8b82">SIM</text>
+<path d="M800,1975 L800,2020" fill="none" stroke="#0c8b82" stroke-width="4" marker-end="url(#arrow)"/>
+<g filter="url(#shadow)"><rect x="390" y="2025" width="820" height="160" rx="18" fill="#ffffff" stroke="#d8e2e7" stroke-width="2"/></g>
+<circle cx="425" cy="2059" r="18" fill="#0c8b82"/><text x="425" y="2065" text-anchor="middle" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="white">9</text>
+<text x="455" y="2064" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#193244">Orientar e registrar decisão por item</text>
+<text x="415" y="2098" font-family="Arial,sans-serif" font-size="16" fill="#607482">Registrar orientações e treinamento quando aplicável.</text>
+<text x="415" y="2125" font-family="Arial,sans-serif" font-size="16" fill="#607482">Servidor aceita ou recusa cada EPI; recusa exige motivo,</text>
+<text x="415" y="2152" font-family="Arial,sans-serif" font-size="16" fill="#607482">com observação livre opcional. Repetir para todos os itens.</text>
+<g filter="url(#shadow)"><rect x="60" y="2040" width="300" height="135" rx="18" fill="#fff0ed" stroke="#e6a99e" stroke-width="2"/></g>
+<text x="84" y="2079" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#193244">Recusa registrada</text>
+<text x="85" y="2113" font-family="Arial,sans-serif" font-size="16" fill="#607482">O item e o motivo constam</text>
+<text x="85" y="2140" font-family="Arial,sans-serif" font-size="16" fill="#607482">no termo, sem saída de</text>
+<text x="85" y="2167" font-family="Arial,sans-serif" font-size="16" fill="#607482">estoque para esse item.</text>
+<path d="M390 2105 H360" fill="none" stroke="#c96758" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow-red)"/>
+<path d="M800,2185 L800,2235" fill="none" stroke="#0c8b82" stroke-width="4" marker-end="url(#arrow)"/>
+<g filter="url(#shadow)"><rect x="390" y="2240" width="820" height="145" rx="18" fill="#ffffff" stroke="#d8e2e7" stroke-width="2"/></g>
+<circle cx="425" cy="2274" r="18" fill="#0c8b82"/><text x="425" y="2280" text-anchor="middle" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="white">10</text>
+<text x="455" y="2279" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#193244">Revisar e formalizar</text>
+<text x="415" y="2313" font-family="Arial,sans-serif" font-size="16" fill="#607482">Conferir resumo, coletar assinatura ou aplicar procedimento</text>
+<text x="415" y="2340" font-family="Arial,sans-serif" font-size="16" fill="#607482">alternativo autorizado. Anexar evidências conforme política local.</text>
+<path d="M800,2385 L800,2435" fill="none" stroke="#0c8b82" stroke-width="4" marker-end="url(#arrow)"/>
+<g filter="url(#shadow)"><rect x="390" y="2440" width="820" height="165" rx="18" fill="#e8f5f2" stroke="#0c8b82" stroke-width="2"/></g>
+<circle cx="425" cy="2474" r="18" fill="#0c8b82"/><text x="425" y="2480" text-anchor="middle" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="white">11</text>
+<text x="455" y="2479" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#193244">Finalizar entrega em uma transação</text>
+<text x="415" y="2513" font-family="Arial,sans-serif" font-size="16" fill="#607482">Gerar termo e registrar assinatura, evidências, hashes e auditoria.</text>
+<text x="415" y="2540" font-family="Arial,sans-serif" font-size="16" fill="#607482">Lançar saída de estoque somente para itens aceitos.</text>
+<text x="415" y="2567" font-family="Arial,sans-serif" font-size="16" fill="#607482">Se houver falha, não deixar entrega e saldo parcialmente gravados.</text>
+<path d="M800 2605 V2645 H520 V2670" fill="none" stroke="#0c8b82" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M800 2645 H1080 V2670" fill="none" stroke="#0c8b82" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<g filter="url(#shadow)"><rect x="100" y="2675" width="620" height="150" rx="18" fill="#ffffff" stroke="#d8e2e7" stroke-width="2"/></g>
+<circle cx="135" cy="2709" r="18" fill="#0c8b82"/><text x="135" y="2715" text-anchor="middle" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="white">12</text>
+<text x="165" y="2714" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#193244">Acompanhar uso e reposição</text>
+<text x="125" y="2748" font-family="Arial,sans-serif" font-size="16" fill="#607482">Calcular previsão de troca como estimativa.</text>
+<text x="125" y="2775" font-family="Arial,sans-serif" font-size="16" fill="#607482">Registrar dano, perda ou inadequação e abrir substituição.</text>
+<text x="125" y="2802" font-family="Arial,sans-serif" font-size="16" fill="#607482">Nova entrega mantém vínculo com a ocorrência anterior.</text>
+<g filter="url(#shadow)"><rect x="880" y="2675" width="620" height="150" rx="18" fill="#ffffff" stroke="#d8e2e7" stroke-width="2"/></g>
+<circle cx="915" cy="2709" r="18" fill="#0c8b82"/><text x="915" y="2715" text-anchor="middle" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="white">13</text>
+<text x="945" y="2714" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#193244">Consultar relatórios e auditoria</text>
+<text x="905" y="2748" font-family="Arial,sans-serif" font-size="16" fill="#607482">Filtrar por servidor, secretaria, EPI, lote e período.</text>
+<text x="905" y="2775" font-family="Arial,sans-serif" font-size="16" fill="#607482">Exportar termos e evidências conforme permissões.</text>
+<text x="905" y="2802" font-family="Arial,sans-serif" font-size="16" fill="#607482">Registrar exportações e preservar histórico corretivo.</text>
+<path d="M410 2825 V2860 H30 V1345 H390" fill="none" stroke="#0c8b82" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="60" y="2848" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="#0c8b82">SUBSTITUIÇÃO → NOVA ENTREGA</text>
+
+<rect x="80" y="2915" width="1440" height="175" rx="18" fill="#183449"/>
+<text x="112" y="2955" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="white">Regras transversais</text>
+<text x="112" y="2990" font-family="Arial,sans-serif" font-size="15" fill="#d5e3e9">• Acesso por perfil e escopo; CPF, assinatura, fotos e localização com coleta mínima e acesso restrito.</text>
+<text x="112" y="3020" font-family="Arial,sans-serif" font-size="15" fill="#d5e3e9">• Conexão indisponível: salvar rascunho com identificador único e sincronizar sem duplicar entregas ou movimentos.</text>
+<text x="112" y="3050" font-family="Arial,sans-serif" font-size="15" fill="#d5e3e9">• Entrega finalizada não é apagada: correções e estornos preservam o original e registram autor, data e justificativa.</text>
+</svg>
