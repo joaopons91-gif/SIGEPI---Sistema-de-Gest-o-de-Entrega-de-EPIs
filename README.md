@@ -31,16 +31,7 @@ O projeto é direcionado inicialmente a prefeituras e órgãos públicos de pequ
 - Captura de fotos, alertas de reposição e vencimento, geolocalização opcional, modo de baixa conectividade e integrações.
 - Sugestões de EPIs por atividade, baseadas em regras configuradas e aprovadas pelo SST. A ferramenta deve apoiar a decisão, nunca determinar sozinha o EPI legalmente exigido. A seleção depende dos riscos ocupacionais e dos documentos de SST aplicáveis.
 
-## Fluxo principal de entrega
-
-1. O operador identifica o servidor e confirma secretaria, cargo e local.
-2. Seleciona os EPIs, quantidades e lotes disponíveis.
-3. O servidor confirma individualmente cada item como aceito ou recusado.
-4. Para cada recusa, o motivo é obrigatório: equipamento em boas condições, incompatibilidade, recusa pessoal ou outro. A explicação livre é opcional.
-5. O operador revisa os dados; o servidor assina na tela; o sistema finaliza o termo e registra o evento.
-6. O histórico fica disponível conforme o perfil de acesso e pode ser exportado para auditoria.
-
-## Fluxo Operacional do Processo - Ponta a Ponta:
+## Fluxo Completo
 
 <img width="1600" height="3150" alt="fluxo-processo" src="https://github.com/user-attachments/assets/f59a5acd-8314-44e1-937a-487939f1efb5" />
 
