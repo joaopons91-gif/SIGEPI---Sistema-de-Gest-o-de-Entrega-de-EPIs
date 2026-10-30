@@ -40,7 +40,7 @@ O projeto é direcionado inicialmente a prefeituras e órgãos públicos de pequ
 5. O operador revisa os dados; o servidor assina na tela; o sistema finaliza o termo e registra o evento.
 6. O histórico fica disponível conforme o perfil de acesso e pode ser exportado para auditoria.
 
-### Fluxo Operacional do Processo
+### Fluxo Operacional do Processo - Ponta a Ponta:
 
 <img width="1600" height="3150" alt="fluxo-processo" src="https://github.com/user-attachments/assets/f59a5acd-8314-44e1-937a-487939f1efb5" />
 
