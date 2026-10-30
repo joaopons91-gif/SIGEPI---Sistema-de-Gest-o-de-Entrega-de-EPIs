@@ -158,6 +158,14 @@ Painel:
 
 <img width="1440" height="1000" alt="painel" src="https://github.com/user-attachments/assets/68fcc8d8-49b1-49d1-bbf0-6a13b3aae807" />
 
+Estoque:
+
+<img width="1440" height="1000" alt="estoque" src="https://github.com/user-attachments/assets/4536c265-a9c1-4fd5-8ba7-59edf768fb92" />
+
+Nova Entrega:
+
+<img width="1440" height="1000" alt="nova-entrega" src="https://github.com/user-attachments/assets/ad097061-b491-4921-bcaa-90fb5dc5c97b" />
+
 ## Modelo conceitual inicial
 
 Entidades principais: `Servidor`, `Secretaria`, `Departamento`, `EPI`, `Lote`, `Compra`, `MovimentacaoEstoque`, `Entrega`, `ItemEntrega`, `Evidencia`, `Usuario`, `Perfil` e `EventoAuditoria`.
