@@ -152,6 +152,12 @@ Telas previstas para o produto:
 6. **Histórico:** busca e linha do tempo por servidor.
 7. **Relatórios:** exportação conforme perfil e secretaria autorizada.
 
+Exemplos de Telas que pode ser visualizada no Protótipo:
+
+Painel:
+
+<img width="1440" height="1000" alt="painel" src="https://github.com/user-attachments/assets/68fcc8d8-49b1-49d1-bbf0-6a13b3aae807" />
+
 ## Modelo conceitual inicial
 
 Entidades principais: `Servidor`, `Secretaria`, `Departamento`, `EPI`, `Lote`, `Compra`, `MovimentacaoEstoque`, `Entrega`, `ItemEntrega`, `Evidencia`, `Usuario`, `Perfil` e `EventoAuditoria`.
